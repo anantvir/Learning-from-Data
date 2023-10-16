@@ -5,6 +5,18 @@ import math
 import numpy as np
 
 """ 
+ References :
+ 
+ 1. Stanford CS224n : https://web.stanford.edu/class/cs224n/readings/cs224n-self-attention-transformers-2023_draft.pdf
+ 
+ 2. Attention is all you need paper : https://arxiv.org/abs/1706.03762
+ 
+ 3. Aladdin Persson : https://www.youtube.com/watch?v=U0s0f995w14 : Awesome job by Aladdin. This video assumes you are fluent in PyTorch and have in depth 
+ understanding of Transfomer architecture. So I have added comments along the way for someone who is new to Transformers and PyTorch
+ 
+"""
+
+""" 
     Lets take an example to make is easy to understand
     Assume batch_size = 32, sequence_length = 10, embedding_dimension = 512, num_heads = 8
 """
