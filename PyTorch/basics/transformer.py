@@ -210,7 +210,7 @@ class DecoderBlock(nn.Module):
 class Decoder(nn.Module):
     def __init__(
         self,
-        vocabulary_size,
+        target_vocabulary_size,
         embedding_size,
         num_layers,
         num_heads,
@@ -221,7 +221,7 @@ class Decoder(nn.Module):
     ):
         super(Decoder, self).__init__()
         self.device = device
-        self.word_embedding = nn.Embedding(vocabulary_size, embedding_size)
+        self.word_embedding = nn.Embedding(target_vocabulary_size, embedding_size)
         self.positional_embedding = nn.Embedding(max_sentence_length, embedding_size)
         
         self.decoder_blocks = nn.ModuleList(
@@ -230,7 +230,16 @@ class Decoder(nn.Module):
             ]
         )
         
-        self.fc_out = nn.Linear(embedding_size, embedding_size)
+        """ Map each word embedding to target vocab, e.g. if 
+        embedding size = 512
+        seq_len = 50
+        target_vocab_size = 10000
+        batch_size = 32
+        then decoder output before passing through final linear layer = (batch_size, seq_len, embedding_size) or (32, 50, 512)
+        decoder output after passing through final linear layer = (batch_size, seq_len, target_vocab_size) or (32, 50, 10000)
+        
+        """
+        self.fc_out = nn.Linear(embedding_size, target_vocabulary_size) 
         self.dropout = nn.Dropout(dropout)
     
     def forward(self, x, encoder_output, source_mask, target_mask):
