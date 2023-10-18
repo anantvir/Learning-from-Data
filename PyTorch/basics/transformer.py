@@ -5,6 +5,8 @@ import math
 import numpy as np
 
 """ 
+Author : Anantvir Singh
+
  References :
  
  1. Stanford CS224n : https://web.stanford.edu/class/cs224n/readings/cs224n-self-attention-transformers-2023_draft.pdf
