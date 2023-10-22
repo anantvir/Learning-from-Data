@@ -184,17 +184,11 @@ class Transformer(nn.Module):
         source_embeddings = self.dropout(
             (self.source_word_embedding(source) + self.source_position_embedding(source_positions))
         )
-        #source_embeddings.to(self.device).long()
+
         target_embeddings = self.dropout(
             (self.target_word_embedding(target) + self.target_position_embedding(target_positions))
         )
-        #target_embeddings.to(self.device).long()
         
-        # tgt_tkn_embd = self.target_word_embedding(target)
-        
-        # tgt_pos_embd = self.target_position_embedding(target_positions)
-        
-        # target_embeddings = self.dropout(tgt_tkn_embd + tgt_pos_embd)
         source_key_padding_mask = self.make_source_mask(source).T # Transpose because nn.Transformer expects input shape: (N,S) or (batch_size, source_sentence_length)
         target_mask = self.transformer.generate_square_subsequent_mask(target_seq_length).to(self.device)
 
@@ -228,7 +222,7 @@ save_model = True
 num_epochs = 5
 learning_rate = 3e-4
 batch_size = 128
-#print(vocab_transform["de"].vocab.lookup_token(16553))
+
 # Model hyperparams
 source_vocab_size = len(vocab_transform[SRC_LANGUAGE])
 target_vocab_size = len(vocab_transform[TGT_LANGUAGE])
@@ -259,17 +253,6 @@ model = Transformer(
 optimizer = optim.Adam(model.parameters(), lr = learning_rate)
 
 loss_fn = nn.CrossEntropyLoss(ignore_index = PAD_IDX)
-
-
-# train_iter = Multi30k(split='train', language_pair=(SRC_LANGUAGE, TGT_LANGUAGE))
-# train_dataloader = DataLoader(train_iter, batch_size=4, collate_fn=collate_fn) # Generates batches with shape : (sequence_length, batch_size)
-        
-# for source,target in train_dataloader:
-#     print("target :",target)
-
-#     trg = target[:-1,:]
-#     print(trg)
-#     print("finish one iteration")
 
 def train_epoch(model, optimizer):
 
